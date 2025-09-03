@@ -34,10 +34,35 @@ body {
 
 .header-content {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    background: rgba(247, 147, 26, 0.2);
+    color: #f7931a;
+}
+
+.nav-links a.active {
+    background: #f7931a;
+    color: #000;
+    font-weight: bold;
 }
 
 .logo {
@@ -466,6 +491,204 @@ body {
     font-weight: 600;
 }
 
+/* DCA/Lump Sum Page Styles */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.page-header h1 {
+    color: #f7931a;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.page-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+}
+
+.calculator-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.input-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.investment-amount-section,
+.strategy-selection {
+    margin-bottom: 2rem;
+}
+
+.strategy-toggle {
+    display: flex;
+    gap: 0;
+    margin-top: 1rem;
+}
+
+.strategy-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.strategy-btn:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+.strategy-btn:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+.strategy-btn.active {
+    background: #f7931a;
+    border-color: #f7931a;
+    color: #000;
+    font-weight: bold;
+}
+
+.strategy-btn:hover:not(.active) {
+    background: rgba(247, 147, 26, 0.2);
+}
+
+.strategy-options {
+    display: none;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.strategy-options.active {
+    display: block;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.results-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+}
+
+.loading-spinner i {
+    font-size: 3rem;
+    color: #f7931a;
+    margin-bottom: 1rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.result-card {
+    background: rgba(247, 147, 26, 0.1);
+    border: 1px solid rgba(247, 147, 26, 0.3);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.result-icon {
+    font-size: 2rem;
+    color: #f7931a;
+}
+
+.result-content h4 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.result-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f7931a;
+}
+
+.investment-summary {
+    margin-bottom: 2rem;
+}
+
+.summary-details {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.summary-value {
+    color: #f7931a;
+    font-weight: bold;
+}
+
+.chart-section {
+    margin-top: 2rem;
+}
+
+.chart-container {
+    height: 300px;
+    margin-top: 1rem;
+}
+
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    color: #ff4444;
+}
+
+.error-message i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .spending-container {
@@ -490,5 +713,28 @@ body {
     .goal-results,
     .arr-results {
         grid-template-columns: 1fr;
+    }
+    
+    .calculator-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
