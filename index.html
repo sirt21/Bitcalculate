@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Spending Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-bitcoin"></i>
+                    <h1>Bitcoin Spending Calculator</h1>
+                </div>
+            </div>
+        </header>
+
+        <div class="spending-container">
+            <div class="spending-header">
+                <h1><i class="fas fa-calculator"></i> How Much Bitcoin Did I Spend?</h1>
+                <p>Calculate your spending in Bitcoin terms and track your purchasing power over time.</p>
+                
+                <div class="period-toggle">
+                    <button class="toggle-btn active" onclick="togglePeriod('daily')">Daily</button>
+                    <button class="toggle-btn" onclick="togglePeriod('monthly')">Monthly</button>
+                </div>
+            </div>
+
+            <div class="spending-calculator">
+                <h3><i class="fas fa-money-bill-wave"></i> <span id="calculatorTitle">Daily</span> Spending Calculator</h3>
+                
+                <div class="input-group">
+                    <label for="incomeAmount"><span id="incomeLabel">Daily</span> Income ($)</label>
+                    <input type="number" id="incomeAmount" placeholder="Enter your income" step="0.01" min="0">
+                </div>
+                
+                <div class="category-list">
+                    <h4><i class="fas fa-list"></i> Spending Categories</h4>
+                    <div id="categoryEntries">
+                        <!-- Category entries will be added here -->
+                    </div>
+                    <button type="button" class="add-category-btn" onclick="addCategoryEntry()">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                    
+                    <div class="total-spending" id="totalSpending" style="display: none;">
+                        <div class="total-amount" id="totalAmount">$0.00</div>
+                        <div class="total-label">Total Spending</div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="btcPrice">Current Bitcoin Price ($)</label>
+                    <input type="number" id="btcPrice" placeholder="Current BTC price" step="0.01" min="0">
+                </div>
+                
+                <!-- Bitcoin Goal Section -->
+                <div class="goal-section">
+                    <div class="goal-header">
+                        <label class="goal-toggle">
+                            <input type="checkbox" id="enableGoal" onchange="toggleGoalSection()">
+                            <span class="checkmark"></span>
+                            Set Bitcoin Holding Goal (Optional)
+                        </label>
+                    </div>
+                    <div class="goal-inputs" id="goalInputs" style="display: none;">
+                        <div class="input-group">
+                            <label for="btcGoal">Bitcoin Goal (BTC)</label>
+                            <input type="number" id="btcGoal" placeholder="e.g., 1.0" step="0.00000001" min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bitcoin ARR Projection Section -->
+                <div class="arr-section">
+                    <div class="arr-header">
+                        <label class="arr-toggle">
+                            <input type="checkbox" id="enableARR" onchange="toggleARRSection()">
+                            <span class="checkmark"></span>
+                            Bitcoin ARR Projection (Optional)
+                        </label>
+                    </div>
+                    <div class="arr-inputs" id="arrInputs" style="display: none;">
+                        <div class="input-group">
+                            <label for="btcARR">Estimated Bitcoin Annual Return Rate (%)</label>
+                            <input type="number" id="btcARR" placeholder="e.g., 20" step="0.1" min="0" max="1000">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateSpending()">
+                    <i class="fas fa-calculator"></i> Calculate Bitcoin Analysis
+                </button>
+            </div>
+
+            <div class="results-section" id="resultsSection">
+                <h3><i class="fas fa-chart-line"></i> Your Bitcoin Spending Analysis</h3>
+                
+                <div class="result-card">
+                    <div class="result-value" id="btcSpent">0.00000000</div>
+                    <div class="result-label">Bitcoin Spent</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-value" id="satoshisSpent">0</div>
+                    <div class="result-label">Satoshis Spent</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-value" id="percentageOfBtc">0.00%</div>
+                    <div class="result-label">Percentage of 1 Bitcoin</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-value" id="btcSaved">0.00000000</div>
+                    <div class="result-label">Bitcoin Saved</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-value" id="savingsRate">0.00%</div>
+                    <div class="result-label">Savings Rate</div>
+                </div>
+                
+                <!-- Goal Progress Cards (shown when goal is set) -->
+                <div class="goal-results" id="goalResults" style="display: none;">
+                    <div class="result-card goal-card">
+                        <div class="result-value" id="spentVsGoal">0.00%</div>
+                        <div class="result-label">Spent vs Goal</div>
+                    </div>
+                    
+                    <div class="result-card goal-card">
+                        <div class="result-value" id="savedVsGoal">0.00%</div>
+                        <div class="result-label">Saved vs Goal</div>
+                    </div>
+                    
+                    <div class="result-card goal-card">
+                        <div class="result-value" id="goalProgress">0.00%</div>
+                        <div class="result-label">Goal Progress</div>
+                    </div>
+                </div>
+                
+                <!-- ARR Projection Results (shown when ARR is enabled) -->
+                <div class="arr-results" id="arrResults" style="display: none;">
+                    <div class="result-card arr-card">
+                        <div class="result-value" id="timeToGoal">--</div>
+                        <div class="result-label">Time to Reach Goal</div>
+                    </div>
+                    
+                    <div class="result-card arr-card">
+                        <div class="result-value" id="futureValue">$0</div>
+                        <div class="result-label">Future Portfolio Value</div>
+                    </div>
+                    
+                    <div class="result-card arr-card">
+                        <div class="result-value" id="monthlyNeeded">0.00000000</div>
+                        <div class="result-label">BTC Needed Monthly</div>
+                    </div>
+                </div>
+                
+                <div class="spending-history" id="spendingHistory">
+                    <h4><i class="fas fa-history"></i> Recent Spending History</h4>
+                    <div id="historyList">
+                        <!-- History items will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

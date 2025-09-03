@@ -1,0 +1,16 @@
+{
+  "name": "bitcoin-spending-calculator",
+  "version": "1.0.0",
+  "description": "Standalone Bitcoin spending and savings calculator with goal tracking and ARR projections",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["bitcoin", "spending", "calculator", "savings", "cryptocurrency"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
