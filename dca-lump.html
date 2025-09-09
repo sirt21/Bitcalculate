@@ -6,7 +6,171 @@
     <title>DCA vs Lump Sum - Bitcoin Calculator</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dca-lump-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .strategy-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .strategy-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+        }
+        
+        .strategy-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .strategy-header h2 {
+            color: #ff9500;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        
+        .strategy-header p {
+            color: #ccc;
+            font-size: 0.9em;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #ff9500;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #ff9500;
+            box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.2);
+        }
+        
+        .frequency-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff9500, #ffb84d);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            background: linear-gradient(135deg, #e68500, #ff9500);
+            transform: translateY(-2px);
+        }
+        
+        .results-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            display: none;
+        }
+        
+        .results-section.show {
+            display: block;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+        }
+        
+        .result-label {
+            color: #ccc;
+        }
+        
+        .result-value {
+            color: #ff9500;
+            font-weight: 600;
+        }
+        
+        .comparison-section {
+            grid-column: 1 / -1;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .comparison-section.show {
+            display: block;
+        }
+        
+        .comparison-title {
+            color: #ff9500;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .comparison-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .strategy-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .frequency-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -23,146 +187,147 @@
             </div>
         </header>
 
-        <main class="main">
+        <div class="dca-lump-container">
             <div class="page-header">
-                <h1><i class="fas fa-chart-line"></i> DCA vs Lump Sum Calculator</h1>
-                <p>Compare Dollar Cost Averaging vs Lump Sum Bitcoin investment strategies</p>
+                <h1><i class="fas fa-chart-line"></i> DCA vs Lump Sum Investment Calculator</h1>
+                <p>Compare Dollar Cost Averaging against Lump Sum investment strategies for Bitcoin</p>
             </div>
 
-            <div class="calculator-container">
-                <div class="input-section">
-                    <div class="investment-amount-section">
-                        <h3><i class="fas fa-dollar-sign"></i> Investment Amount</h3>
-                        <div class="input-group">
-                            <label for="investmentAmount">Total Investment ($)</label>
-                            <input type="number" id="investmentAmount" placeholder="10000" min="1" step="1">
-                        </div>
+            <div class="strategy-sections">
+                <!-- DCA Section -->
+                <div class="strategy-section">
+                    <div class="strategy-header">
+                        <h2><i class="fas fa-calendar-alt"></i> Dollar Cost Averaging (DCA)</h2>
+                        <p>Invest a fixed amount at regular intervals</p>
                     </div>
-
-                    <div class="strategy-selection">
-                        <h3><i class="fas fa-toggle-on"></i> Investment Strategy</h3>
-                        <div class="strategy-toggle">
-                            <button id="dcaBtn" class="strategy-btn active">
-                                <i class="fas fa-calendar-alt"></i>
-                                Dollar Cost Averaging
-                            </button>
-                            <button id="lumpBtn" class="strategy-btn">
-                                <i class="fas fa-coins"></i>
-                                Lump Sum
-                            </button>
-                        </div>
+                    
+                    <div class="input-group">
+                        <label for="dca-amount">Total Amount to Invest ($)</label>
+                        <input type="number" id="dca-amount" placeholder="e.g., 10000" min="1" step="0.01">
                     </div>
-
-                    <!-- DCA Options -->
-                    <div id="dcaOptions" class="strategy-options active">
-                        <h4>DCA Configuration</h4>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="dcaStartDate">Start Date</label>
-                                <input type="date" id="dcaStartDate">
-                            </div>
-                            <div class="input-group">
-                                <label for="dcaAmount">DCA Amount ($)</label>
-                                <input type="number" id="dcaAmount" placeholder="500" min="1" step="1">
-                            </div>
-                        </div>
+                    
+                    <div class="frequency-group">
                         <div class="input-group">
-                            <label for="dcaFrequency">Frequency</label>
-                            <select id="dcaFrequency">
-                                <option value="weekly">Weekly</option>
-                                <option value="monthly" selected>Monthly</option>
+                            <label for="dca-frequency">Investment Frequency</label>
+                            <select id="dca-frequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly" selected>Weekly</option>
+                                <option value="monthly">Monthly</option>
                             </select>
                         </div>
-                    </div>
-
-                    <!-- Lump Sum Options -->
-                    <div id="lumpOptions" class="strategy-options">
-                        <h4>Lump Sum Configuration</h4>
+                        
                         <div class="input-group">
-                            <label for="lumpDate">Investment Date</label>
-                            <input type="date" id="lumpDate">
+                            <label for="dca-per-period">Amount per Period ($)</label>
+                            <input type="number" id="dca-per-period" placeholder="e.g., 100" min="1" step="0.01">
                         </div>
                     </div>
-
-                    <button id="calculateBtn" class="calculate-btn">
-                        <i class="fas fa-calculator"></i>
-                        Calculate Returns
+                    
+                    <div class="input-group">
+                        <label for="dca-start-date">Start Date</label>
+                        <input type="date" id="dca-start-date">
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculateDCA()">
+                        <i class="fas fa-calculator"></i> Calculate DCA Returns
                     </button>
+                    
+                    <div class="results-section" id="dca-results">
+                        <h3>DCA Results</h3>
+                        <div class="result-item">
+                            <span class="result-label">Total Invested:</span>
+                            <span class="result-value" id="dca-total-invested">$0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Bitcoin Acquired:</span>
+                            <span class="result-value" id="dca-btc-acquired">0 BTC</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Current Value:</span>
+                            <span class="result-value" id="dca-current-value">$0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Total Return:</span>
+                            <span class="result-value" id="dca-total-return">$0 (0%)</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Average Buy Price:</span>
+                            <span class="result-value" id="dca-avg-price">$0</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="results-section">
-                    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p>Calculating returns...</p>
+                <!-- Lump Sum Section -->
+                <div class="strategy-section">
+                    <div class="strategy-header">
+                        <h2><i class="fas fa-coins"></i> Lump Sum Investment</h2>
+                        <p>Invest the entire amount at once</p>
                     </div>
-
-                    <div id="resultsContainer" class="results-container" style="display: none;">
-                        <h3><i class="fas fa-chart-bar"></i> Investment Results</h3>
-                        
-                        <div class="results-grid">
-                            <div class="result-card">
-                                <div class="result-icon">
-                                    <i class="fab fa-bitcoin"></i>
-                                </div>
-                                <div class="result-content">
-                                    <h4>Bitcoin Acquired</h4>
-                                    <p id="btcAmount" class="result-value">0.00000000 BTC</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon">
-                                    <i class="fas fa-dollar-sign"></i>
-                                </div>
-                                <div class="result-content">
-                                    <h4>Current Value</h4>
-                                    <p id="currentValue" class="result-value">$0.00</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <div class="result-content">
-                                    <h4>Total Gains</h4>
-                                    <p id="totalGains" class="result-value">$0.00</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon">
-                                    <i class="fas fa-percentage"></i>
-                                </div>
-                                <div class="result-content">
-                                    <h4>Return %</h4>
-                                    <p id="returnPercentage" class="result-value">0.00%</p>
-                                </div>
-                            </div>
+                    
+                    <div class="input-group">
+                        <label for="lump-amount">Investment Amount ($)</label>
+                        <input type="number" id="lump-amount" placeholder="e.g., 10000" min="1" step="0.01">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="lump-start-date">Investment Date</label>
+                        <input type="date" id="lump-start-date">
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculateLumpSum()">
+                        <i class="fas fa-calculator"></i> Calculate Lump Sum Returns
+                    </button>
+                    
+                    <div class="results-section" id="lump-results">
+                        <h3>Lump Sum Results</h3>
+                        <div class="result-item">
+                            <span class="result-label">Total Invested:</span>
+                            <span class="result-value" id="lump-total-invested">$0</span>
                         </div>
-
-                        <div class="investment-summary">
-                            <h4>Investment Summary</h4>
-                            <div id="summaryDetails" class="summary-details">
-                                <!-- Summary will be populated by JavaScript -->
-                            </div>
+                        <div class="result-item">
+                            <span class="result-label">Bitcoin Acquired:</span>
+                            <span class="result-value" id="lump-btc-acquired">0 BTC</span>
                         </div>
-
-                        <div class="chart-section">
-                            <h4>Investment Performance Over Time</h4>
-                            <div class="chart-container">
-                                <canvas id="performanceChart"></canvas>
-                            </div>
+                        <div class="result-item">
+                            <span class="result-label">Current Value:</span>
+                            <span class="result-value" id="lump-current-value">$0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Total Return:</span>
+                            <span class="result-value" id="lump-total-return">$0 (0%)</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Buy Price:</span>
+                            <span class="result-value" id="lump-buy-price">$0</span>
                         </div>
                     </div>
+                </div>
 
-                    <div id="errorMessage" class="error-message" style="display: none;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Unable to calculate returns. Please check your inputs and try again.</p>
+                <!-- Comparison Section -->
+                <div class="comparison-section" id="comparison-section">
+                    <h2 class="comparison-title"><i class="fas fa-balance-scale"></i> Strategy Comparison</h2>
+                    <div class="comparison-results">
+                        <div class="comparison-item">
+                            <h3>DCA Strategy</h3>
+                            <div class="result-item">
+                                <span class="result-label">Return:</span>
+                                <span class="result-value" id="comparison-dca-return">$0 (0%)</span>
+                            </div>
+                        </div>
+                        <div class="comparison-item">
+                            <h3>Lump Sum Strategy</h3>
+                            <div class="result-item">
+                                <span class="result-label">Return:</span>
+                                <span class="result-value" id="comparison-lump-return">$0 (0%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-item" style="margin-top: 20px; font-size: 1.2em;">
+                        <span class="result-label">Better Strategy:</span>
+                        <span class="result-value" id="better-strategy">-</span>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
     <script src="dca-lump.js"></script>
